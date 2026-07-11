@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hounds - Torrance Rotation Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        torranceBlue: '#425D8E',
+                        torranceDark: '#1E293B',
+                        torranceGold: '#F59E0B'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-800">
+
+    <header class="bg-torranceBlue text-white shadow-md border-b-4 border-torranceDark">
+        <div class="max-w-6xl mx-auto px-4 py-5 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-white text-torranceBlue px-3 py-1.5 rounded-full font-extrabold text-xl tracking-wider shadow-inner">
+                    TH
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-tight uppercase">The Hounds</h1>
+                    <p class="text-xs font-semibold tracking-wider text-blue-100 uppercase">Torrance City Basketball Rotation</p>
+                </div>
+            </div>
+            <span class="bg-torranceDark text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide text-gray-200">
+                Format: 2x20 Min Halves (5 Min Shifts)
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <h2 class="text-lg font-bold text-torranceDark mb-4 flex items-center gap-2">
+                    <span>📋</span> Manage Roster
+                </h2>
+                
+                <form id="addPlayerForm" class="grid grid-cols-3 gap-2 mb-6">
+                    <input type="number" id="playerNumInput" placeholder="#" required class="col-span-1 px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-torranceBlue text-sm text-center"/>
+                    <input type="text" id="playerNameInput" placeholder="Name" required class="col-span-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-torranceBlue text-sm"/>
+                    <button type="submit" class="col-span-3 bg-torranceBlue hover:bg-opacity-90 text-white font-semibold py-2 rounded-lg text-sm transition shadow-sm">+ Add Player</button>
+                </form>
+
+                <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wider">Select Attendance</p>
+                <div id="rosterCheckboxes" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
+
+                <div class="mt-6 pt-4 border-t border-gray-100 flex flex-col gap-3">
+                    <button id="generateRotationBtn" class="w-full bg-torranceBlue hover:bg-torranceDark text-white font-bold py-3 px-4 rounded-xl shadow transition duration-200 uppercase tracking-wide text-sm flex items-center justify-center gap-2">
+                        🏀 Generate Fair Rotation
+                    </button>
+                    <button id="resetRosterBtn" class="text-center text-xs text-red-600 hover:underline font-semibold">Reset Roster to Defaults</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+            <div id="outputPlaceholder" class="bg-white p-12 rounded-xl shadow-sm border border-gray-200 text-center flex flex-col items-center justify-center min-h-[400px]">
+                <div class="text-5xl mb-4">🐾</div>
+                <h3 class="text-xl font-bold text-gray-700 mb-1">Ready for Tip-Off</h3>
+                <p class="text-sm text-gray-400 max-w-sm">Mark attending players on the left and hit generate to calculate optimized equal playing time schedules.</p>
+            </div>
+
+            <div id="outputSection" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h2 class="text-lg font-bold text-torranceDark mb-4 flex items-center gap-2">📊 Tracked Court Playtime Target</h2>
+                    <div id="statsGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h2 class="text-lg font-bold text-torranceDark mb-4 flex items-center gap-2">⏱️ Live Matrix Timelines</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="bg-gray-100 text-torranceDark font-bold text-xs px-3 py-1.5 rounded uppercase tracking-wider mb-3">First Half</div>
+                            <div id="firstHalfContainers" class="space-y-3"></div>
+                        </div>
+                        <div>
+                            <div class="bg-gray-100 text-torranceDark font-bold text-xs px-3 py-1.5 rounded uppercase tracking-wider mb-3">Second Half</div>
